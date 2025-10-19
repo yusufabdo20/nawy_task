@@ -3,7 +3,14 @@
 A Flutter project.
 
 ## Getting Started
-
+<img width="330" height="733" alt="image" src="https://github.com/user-attachments/assets/f6a726af-ce74-450d-a5fe-6958f6837fe1" />
+<img width="330" height="733" alt="image" src="https://github.com/user-attachments/assets/e17ac1d0-89e4-4867-8b6f-8160ab9da837" />
+<img width="330" height="733" alt="image" src="https://github.com/user-attachments/assets/63ae4a3d-9515-45b4-a8c6-7079eb91423d" />
+<img width="330" height="733" alt="image" src="https://github.com/user-attachments/assets/41ca218e-0c73-4bc2-94cc-3be09b49eb12" />
+<img width="330" height="733" alt="image" src="https://github.com/user-attachments/assets/7a58c1f8-98e3-4917-a82d-2c4ae3b87bdb" />
+<img width="330" height="733" alt="image" src="https://github.com/user-attachments/assets/b5d0eff8-c1d1-4e41-b809-9d9fb30a9da0" />
+<img width="330" height="733" alt="image" src="https://github.com/user-attachments/assets/5bec2870-aebe-4456-9c7d-324f5638a450" />
+<img width="330" height="733" alt="image" src="https://github.com/user-attachments/assets/84450cb8-8878-4d17-8214-ca775492b301" />
 Nawy Task  by Yusuf Abdulfattah +201067869584 yusufafatah@gmail.com
 
 A sleek, modern Flutter application for discovering and managing real estate properties.
@@ -20,8 +27,7 @@ Fetch real-time filter options from the API
 Instant, debounced search with loading indicators
 
 View detailed information about each property
-<img width="330" height="733" alt="image" src="https://github.com/user-attachments/assets/f6a726af-ce74-450d-a5fe-6958f6837fe1" />
-<img width="330" height="733" alt="image" src="https://github.com/user-attachments/assets/e17ac1d0-89e4-4867-8b6f-8160ab9da837" />
+
 
 
 
