@@ -1,16 +1,16 @@
 import 'package:dartz/dartz.dart';
 import 'package:nawy_task/core/errors/failures.dart';
 import 'package:nawy_task/core/usecases/usecase.dart';
-import 'package:nawy_task/features/explore/data/repo/explore_repo.dart';
 import 'package:nawy_task/features/explore/domain/entities/compound.dart';
+import 'package:nawy_task/features/explore/data/repo/explore_repo.dart';
 
-class GetCompoundsUseCase implements UseCaseNoParams<List<Compound>> {
-  final ExploreRepository _repository;
+class GetCompoundsUseCase implements UseCase<List<Compound>, NoParams> {
+  final ExploreRepository repository;
 
-  GetCompoundsUseCase(this._repository);
+  const GetCompoundsUseCase({required this.repository});
 
   @override
-  Future<Either<Failure, List<Compound>>> call() {
-    return _repository.getCompounds();
+  Future<Either<Failure, List<Compound>>> call(NoParams params) async {
+    return await repository.getCompounds();
   }
 }

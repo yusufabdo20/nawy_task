@@ -37,3 +37,7 @@ class GetFilterOptionsEvent extends ExploreEvent {
 class ClearSearchEvent extends ExploreEvent {
   const ClearSearchEvent();
 }
+
+class GetCompoundsEvent extends ExploreEvent {
+  const GetCompoundsEvent();
+}

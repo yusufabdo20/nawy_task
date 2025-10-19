@@ -3,12 +3,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:nawy_task/features/explore/domain/entities/property.dart';
+import 'package:nawy_task/features/explore/domain/entities/compound.dart';
 import 'package:nawy_task/features/explore/presentation/widgets/property_card.dart';
+import 'package:nawy_task/features/explore/presentation/widgets/compound_card.dart';
 import 'package:nawy_task/features/favorites/presentation/services/favorites_service.dart';
 import 'package:nawy_task/core/constants/app_strings.dart';
 
-class ResultsPage extends StatelessWidget {
+class ResultsPage extends StatefulWidget {
   final List<Property> properties;
+  final List<Compound> compounds;
   final String? searchQuery;
   final String? priceRange;
   final String? roomsRange;
@@ -16,10 +19,30 @@ class ResultsPage extends StatelessWidget {
   const ResultsPage({
     super.key,
     required this.properties,
+    this.compounds = const [],
     this.searchQuery,
     this.priceRange,
     this.roomsRange,
   });
+
+  @override
+  State<ResultsPage> createState() => _ResultsPageState();
+}
+
+class _ResultsPageState extends State<ResultsPage> with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 2, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,12 +52,12 @@ class ResultsPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              '${AppStrings.search_results.tr()} (${properties.length})',
+              '${AppStrings.search_results.tr()} (${widget.properties.length + widget.compounds.length})',
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 fontSize: 18.sp,
               ),
             ),
-            if (searchQuery != null || priceRange != null || roomsRange != null)
+            if (widget.searchQuery != null || widget.priceRange != null || widget.roomsRange != null)
               Text(
                 _buildFilterSummary(),
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -48,13 +71,25 @@ class ResultsPage extends StatelessWidget {
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.of(context).pop(),
         ),
+        bottom: TabBar(
+          controller: _tabController,
+          tabs: [
+            Tab(
+              text: '${AppStrings.properties.tr()} (${widget.properties.length})',
+            ),
+            Tab(
+              text: '${AppStrings.compounds.tr()} (${widget.compounds.length})',
+            ),
+          ],
+        ),
       ),
-      body: properties.isEmpty
+      body: (widget.properties.isEmpty && widget.compounds.isEmpty)
           ? _buildEmptyState(context)
-          : Column(
+          : TabBarView(
+              controller: _tabController,
               children: [
-                if (searchQuery != null || priceRange != null || roomsRange != null) _buildFilterChips(context),
-                Expanded(child: _buildResultsList()),
+                _buildPropertiesTab(),
+                _buildCompoundsTab(),
               ],
             ),
     );
@@ -77,12 +112,12 @@ class ResultsPage extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               child: Row(
                 children: [
-                  if (searchQuery != null && searchQuery!.isNotEmpty)
-                    _buildFilterChip(context, 'Search: "$searchQuery"', Icons.search),
-                  if (priceRange != null && priceRange!.isNotEmpty)
-                    _buildFilterChip(context, 'Price: $priceRange', Icons.attach_money),
-                  if (roomsRange != null && roomsRange!.isNotEmpty)
-                    _buildFilterChip(context, 'Rooms: $roomsRange', Icons.bed),
+                  if (widget.searchQuery != null && widget.searchQuery!.isNotEmpty)
+                    _buildFilterChip(context, 'Search: "${widget.searchQuery}"', Icons.search),
+                  if (widget.priceRange != null && widget.priceRange!.isNotEmpty)
+                    _buildFilterChip(context, 'Price: ${widget.priceRange}', Icons.attach_money),
+                  if (widget.roomsRange != null && widget.roomsRange!.isNotEmpty)
+                    _buildFilterChip(context, 'Rooms: ${widget.roomsRange}', Icons.bed),
                 ],
               ),
             ),
@@ -128,14 +163,14 @@ class ResultsPage extends StatelessWidget {
 
   String _buildFilterSummary() {
     final filters = <String>[];
-    if (searchQuery != null && searchQuery!.isNotEmpty) {
-      filters.add('Search: "$searchQuery"');
+    if (widget.searchQuery != null && widget.searchQuery!.isNotEmpty) {
+      filters.add('Search: "${widget.searchQuery}"');
     }
-    if (priceRange != null && priceRange!.isNotEmpty) {
-      filters.add('Price: $priceRange');
+    if (widget.priceRange != null && widget.priceRange!.isNotEmpty) {
+      filters.add('Price: ${widget.priceRange}');
     }
-    if (roomsRange != null && roomsRange!.isNotEmpty) {
-      filters.add('Rooms: $roomsRange');
+    if (widget.roomsRange != null && widget.roomsRange!.isNotEmpty) {
+      filters.add('Rooms: ${widget.roomsRange}');
     }
     return filters.join(' • ');
   }
@@ -169,7 +204,7 @@ class ResultsPage extends StatelessWidget {
               ),
               textAlign: TextAlign.center,
             ),
-            if (searchQuery != null || priceRange != null || roomsRange != null) ...[
+            if (widget.searchQuery != null || widget.priceRange != null || widget.roomsRange != null) ...[
               SizedBox(height: 16.h),
               Container(
                 padding: EdgeInsets.all(12.w),
@@ -217,14 +252,68 @@ class ResultsPage extends StatelessWidget {
     );
   }
 
-  Widget _buildResultsList() {
+  Widget _buildPropertiesTab() {
+    if (widget.properties.isEmpty) {
+      return _buildEmptyTabState(context, AppStrings.no_properties_found.tr());
+    }
+    
+    return Column(
+      children: [
+        if (widget.searchQuery != null || widget.priceRange != null || widget.roomsRange != null) 
+          _buildFilterChips(context),
+        Expanded(child: _buildPropertiesList()),
+      ],
+    );
+  }
+
+  Widget _buildCompoundsTab() {
+    if (widget.compounds.isEmpty) {
+      return _buildEmptyTabState(context, AppStrings.no_compounds_found.tr());
+    }
+    
+    return Column(
+      children: [
+        if (widget.searchQuery != null || widget.priceRange != null || widget.roomsRange != null) 
+          _buildFilterChips(context),
+        Expanded(child: _buildCompoundsList()),
+      ],
+    );
+  }
+
+  Widget _buildEmptyTabState(BuildContext context, String message) {
+    return Center(
+      child: Padding(
+        padding: EdgeInsets.all(32.w),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.search_off,
+              size: 80.w,
+              color: Colors.grey[400],
+            ),
+            SizedBox(height: 16.h),
+            Text(
+              message,
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                fontSize: 20.sp,
+                color: Colors.grey[600],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPropertiesList() {
     return Consumer<FavoritesService>(
       builder: (context, favoritesService, child) {
         return ListView.builder(
           padding: EdgeInsets.symmetric(vertical: 8.h),
-          itemCount: properties.length,
+          itemCount: widget.properties.length,
           itemBuilder: (context, index) {
-            final property = properties[index];
+            final property = widget.properties[index];
             final propertyId = 'property_${property.id}';
             final isFavorite = favoritesService.isFavorite(propertyId);
             
@@ -294,6 +383,58 @@ class ResultsPage extends StatelessWidget {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text(AppStrings.property_details_not_implemented.tr()),
+                    duration: const Duration(seconds: 2),
+                  ),
+                );
+              },
+            );
+          },
+        );
+      },
+    );
+  }
+
+  Widget _buildCompoundsList() {
+    return Consumer<FavoritesService>(
+      builder: (context, favoritesService, child) {
+        return ListView.builder(
+          padding: EdgeInsets.symmetric(vertical: 8.h),
+          itemCount: widget.compounds.length,
+          itemBuilder: (context, index) {
+            final compound = widget.compounds[index];
+            final compoundId = 'compound_${compound.id}';
+            final isFavorite = favoritesService.isFavorite(compoundId);
+            
+            return CompoundCardWidget(
+              imageUrl: compound.imagePath,
+              name: compound.name ?? 'Unknown',
+              areaName: compound.areaName ?? 'Unknown',
+              hasOffers: compound.hasOffers ?? false,
+              offerTitle: null,
+              isFavorite: isFavorite,
+              onFavoriteToggle: () async {
+                final success = await favoritesService.toggleCompoundFavorite(compound);
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        success 
+                            ? AppStrings.added_to_favorites.tr()
+                            : AppStrings.removed_from_favorites.tr(),
+                      ),
+                      duration: const Duration(seconds: 2),
+                      backgroundColor: success 
+                          ? Colors.green[600] 
+                          : Colors.orange[600],
+                    ),
+                  );
+                }
+              },
+              onTap: () {
+                // TODO: Navigate to compound details
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(AppStrings.compound_details_not_implemented.tr()),
                     duration: const Duration(seconds: 2),
                   ),
                 );

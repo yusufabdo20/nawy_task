@@ -50,10 +50,10 @@ Future<void> initializeDependencies() async {
   );
 
   // Use cases
-  sl.registerLazySingleton(() => GetCompoundsUseCase(sl()));
-  sl.registerLazySingleton(() => GetAreasUseCase(sl()));
   sl.registerLazySingleton(() => SearchPropertiesUseCase(sl()));
   sl.registerLazySingleton(() => GetFilterOptionsUseCase(repository: sl()));
+  sl.registerLazySingleton(() => GetCompoundsUseCase(repository: sl()));
+  sl.registerLazySingleton(() => GetAreasUseCase(sl()));
   sl.registerLazySingleton(() => GetFavoritesUseCase(repository: sl()));
   sl.registerLazySingleton(() => ToggleFavoriteUseCase(repository: sl()));
   sl.registerLazySingleton(() => CheckFavoriteUseCase(repository: sl()));
@@ -68,5 +68,9 @@ Future<void> initializeDependencies() async {
   sl.registerLazySingleton(() => LanguageService());
 
   // Bloc
-  sl.registerFactory(() => ExploreBloc(sl(), sl()));
+  sl.registerFactory(() => ExploreBloc(
+    sl<SearchPropertiesUseCase>(),
+    sl<GetFilterOptionsUseCase>(),
+    sl<GetCompoundsUseCase>(),
+  ));
 }

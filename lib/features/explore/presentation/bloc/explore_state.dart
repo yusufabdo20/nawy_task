@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:nawy_task/features/explore/domain/entities/property.dart';
+import 'package:nawy_task/features/explore/domain/entities/compound.dart';
 import 'package:nawy_task/features/explore/domain/entities/filter_options.dart';
 
 abstract class ExploreState extends Equatable {
@@ -19,11 +20,12 @@ class ExploreLoading extends ExploreState {
 
 class ExploreLoaded extends ExploreState {
   final List<Property> properties;
+  final List<Compound> compounds;
 
-  const ExploreLoaded(this.properties);
+  const ExploreLoaded(this.properties, {this.compounds = const []});
 
   @override
-  List<Object?> get props => [properties];
+  List<Object?> get props => [properties, compounds];
 }
 
 class ExploreEmpty extends ExploreState {

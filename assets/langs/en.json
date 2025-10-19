@@ -25,6 +25,8 @@
   "bathrooms": "Bathrooms",
   "developer": "Developer",
   "compound": "Compound",
+  "compounds": "Compounds",
+  "properties": "Properties",
   "location": "Location",
   "description": "Description",
   
@@ -74,6 +76,8 @@
   "select_price_range": "Select Price Range",
   "search_properties": "Search Properties",
   "no_properties_found": "No properties found matching your search criteria",
+  "no_compounds_found": "No compounds found matching your search criteria",
+  "compound_details_not_implemented": "Compound details not implemented yet",
   "please_enter_search_term": "Please enter a search term",
   "any_price": "Any Price",
   "any_rooms": "Any",

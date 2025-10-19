@@ -143,7 +143,7 @@ class _ExplorePageState extends State<ExplorePage> {
                       ),
                     ),
                     child: Text(
-                      AppStrings.search_properties.tr(),
+                      AppStrings.search.tr(),
                       style: TextStyle(
                         fontSize: 16.sp,
                         fontWeight: FontWeight.w600,
@@ -163,6 +163,7 @@ class _ExplorePageState extends State<ExplorePage> {
                           MaterialPageRoute(
                             builder: (context) => ResultsPage(
                               properties: state.properties,
+                              compounds: state.compounds,
                               searchQuery: _searchController.text.trim(),
                               priceRange: _selectedPriceRange,
                               roomsRange: _buildRoomsRangeText(),

@@ -26,6 +26,8 @@ class AppStrings {
   static const String bathrooms = 'bathrooms';
   static const String developer = 'developer';
   static const String compound = 'compound';
+  static const String compounds = 'compounds';
+  static const String properties = 'properties';
   static const String location = 'location';
   static const String description = 'description';
 
@@ -96,6 +98,8 @@ class AppStrings {
   static const String select_price_range = 'select_price_range';
   static const String search_properties = 'search_properties';
   static const String no_properties_found = 'no_properties_found';
+  static const String no_compounds_found = 'no_compounds_found';
+  static const String compound_details_not_implemented = 'compound_details_not_implemented';
   static const String please_enter_search_term = 'please_enter_search_term';
   static const String any_price = 'any_price';
   static const String search_results = 'search_results';

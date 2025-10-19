@@ -24,6 +24,8 @@
   "bathrooms": "دورات المياه",
   "developer": "المطور",
   "compound": "الكمبوند",
+  "compounds": "الكمبوندات",
+  "properties": "العقارات",
   "location": "الموقع",
   "description": "الوصف",
   
@@ -73,6 +75,8 @@
   "select_price_range": "اختر نطاق السعر",
   "search_properties": "البحث في العقارات",
   "no_properties_found": "لم يتم العثور على عقارات تطابق معايير البحث",
+  "no_compounds_found": "لم يتم العثور على كمبوندات تطابق معايير البحث",
+  "compound_details_not_implemented": "تفاصيل الكمبوند غير متاحة بعد",
   "please_enter_search_term": "يرجى إدخال مصطلح البحث",
   "any_price": "أي سعر",
   "any_rooms": "أي عدد",
