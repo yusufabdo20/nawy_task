@@ -1,4 +1,4 @@
-# nawy_task
+<img width="330" height="733" alt="image" src="https://github.com/user-attachments/assets/60499c4a-f3f3-4127-9cb0-8fd23f8c6575" /># nawy_task
 
 A Flutter project.
 
@@ -20,6 +20,11 @@ Fetch real-time filter options from the API
 Instant, debounced search with loading indicators
 
 View detailed information about each property
+<img width="330" height="733" alt="image" src="https://github.com/user-attachments/assets/f6a726af-ce74-450d-a5fe-6958f6837fe1" />
+<img width="330" height="733" alt="image" src="https://github.com/user-attachments/assets/e17ac1d0-89e4-4867-8b6f-8160ab9da837" />
+
+
+
 --------------------------------------------------------------
 Favorites
 
